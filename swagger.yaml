@@ -1,0 +1,276 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: 'urn:tos'
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: 'localhost:8080'
+basePath: /
+tags:
+  - name: product-api-controller
+    description: Product Api Controller
+paths:
+  '/v2/providers/avocado/apis/api/v1/vendors/{vendor}/products':
+    put:
+      tags:
+        - product-api-controller
+      summary: update
+      operationId: updateUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: product
+          description: product
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
+        - name: vendor
+          in: path
+          description: vendor
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      deprecated: false
+definitions:
+  Product:
+    type: object
+    required:
+      - brand
+      - category
+      - country_of_origin
+      - description
+      - fabric_composition
+      - items
+      - main_image
+      - product_id
+      - status
+      - title
+      - vendor_partner
+    properties:
+      age_groups:
+        type: array
+        description: 'List of age groups: Baby, Toddler, Child, Adult'
+        items:
+          type: string
+          enum:
+            - Baby
+            - Toddler
+            - Child
+            - Adult
+      all_sizes:
+        type: array
+        description: All the created sizes for the product items
+        items:
+          type: string
+      alternate_images:
+        type: array
+        description: Uris of an alternate product images
+        items:
+          type: string
+      association:
+        type: string
+        description: Sports Association
+      attributes:
+        type: array
+        description: Key Value pairs of attributes of the product
+        items:
+          $ref: '#/definitions/VendorAttribute'
+      brand:
+        type: string
+        description: Brand of the product
+      category:
+        type: array
+        description: Category of the product
+        items:
+          type: string
+      color:
+        type: string
+        description: Color of the product
+      country_of_origin:
+        type: string
+        description: The country the product was manufactured in
+      description:
+        type: string
+        description: Description of the product
+      fabric_composition:
+        type: string
+        description: Fabric material composition in percectages
+      fulfillment_region:
+        type: array
+        description: 'Region the product will be fulfilled from [US/ EU]'
+        items:
+          type: string
+          enum:
+            - US
+            - EU
+      gender:
+        type: string
+        description: 'Female, Male, Unisex'
+        enum:
+          - Female
+          - Male
+          - Unisex
+      items:
+        type: array
+        description: List of unique items. One item per SKU/Barcode
+        items:
+          $ref: '#/definitions/ProductItem'
+      league:
+        type: string
+        description: Sports League
+      main_image:
+        type: string
+        description: Uri of the main product image
+      manufacture_date:
+        type: string
+        description: Manufacture date for the product in YYYY-MM-DD
+      player_name:
+        type: string
+        description: Player Name
+      product_id:
+        type: string
+        description: The product id
+      search_keywords:
+        type: string
+        description: Search keywords for the product
+      size_charts:
+        type: array
+        description: change
+        items:
+          $ref: '#/definitions/ProductSizeChart'
+      status:
+        type: string
+        description: Status of a product
+        enum:
+          - Available
+          - NonAvailable
+          - Discontinued
+      team:
+        type: string
+        description: Sports Team
+      title:
+        type: string
+        description: The product title
+      uk_commodity_code:
+        type: string
+        description: 'Used to classify any goods being imported or exported. https://www.gov.uk/trade-tariff'
+      vendor_partner:
+        type: string
+        description: The vendor partner identifer
+      washing_instructions:
+        type: string
+        description: Washing instructions for the product
+    title: Product
+  ProductItem:
+    type: object
+    required:
+      - barcode
+      - currency_code
+      - height
+      - item_id
+      - length
+      - msrp
+      - sale_price
+      - sku_id
+      - weight
+      - width
+    properties:
+      attributes:
+        type: array
+        description: Item attribute pairs
+        items:
+          $ref: '#/definitions/VendorAttribute'
+      barcode:
+        type: string
+        description: Barcode id of the item
+      currency_code:
+        type: string
+        description: 'ISO standard currency code used for the prices [USD, KRW, GBP]'
+        enum:
+          - USD
+          - EUR
+          - GBP
+          - KRW
+      height:
+        type: number
+        format: double
+        description: Dimensions in mm
+      item_id:
+        type: string
+        description: Unique id of the item
+      length:
+        type: number
+        format: double
+        description: Dimensions in mm
+      msrp:
+        type: number
+        format: double
+        description: MSRP of the item
+      sale_price:
+        type: number
+        format: double
+        description: Selling price of the item
+      size:
+        type: string
+        description: Size of the item
+      sku_id:
+        type: string
+        description: SKU id of the item
+      weight:
+        type: number
+        format: double
+        description: Dimensions in mm
+      width:
+        type: number
+        format: double
+        description: Dimensions in mm
+    title: ProductItem
+  ProductSizeChart:
+    type: object
+    properties:
+      rows:
+        type: array
+        items:
+          $ref: '#/definitions/ProductSizeChartRow'
+      title:
+        type: string
+    title: ProductSizeChart
+  ProductSizeChartRow:
+    type: object
+    properties:
+      values:
+        type: array
+        items:
+          type: string
+    title: ProductSizeChartRow
+  Response:
+    type: object
+    properties:
+      success:
+        type: boolean
+    title: Response
+  VendorAttribute:
+    type: object
+    properties:
+      description:
+        type: string
+      value:
+        type: string
+    title: VendorAttribute
